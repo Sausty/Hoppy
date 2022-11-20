@@ -5,20 +5,23 @@
 ## Makefile for the Hoppy engine
 ##
 
-SOURCES = src/foundation/*.cpp
+SOURCES = src/foundation/*.cpp \
+		  src/foundation/windows/*.cpp
 CXX_FLAGS = -g -MD -static -fdeclspec
+INCLUDE_FLAGS = -Isrc
+DISABLED_WARNINGS = -Wno-microsoft-cast
 NAME = hoppy
 
 all: $(NAME)
 
 $(NAME):
-	clang -c $(SOURCES) $(CXX_FLAGS) -o $(NAME).o
-	llvm-ar rc $(NAME).lib $(NAME).o
+	clang -c $(SOURCES) $(CXX_FLAGS) $(INCLUDE_FLAGS) $(DISABLED_WARNINGS)
+	llvm-ar rc $(NAME).lib *.o
 
 clean:
-	rm -f $(NAME).d
-	rm -f $(NAME).o
-	rm -f $(NAME).pdb
+	rm -f *.d
+	rm -f *.o
+	rm -f *.pdb
 
 fclean: clean
 	rm -f $(NAME).lib
