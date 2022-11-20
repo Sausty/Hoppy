@@ -17,6 +17,9 @@ all: $(NAME)
 $(NAME):
 	clang -c $(SOURCES) $(CXX_FLAGS) $(INCLUDE_FLAGS) $(DISABLED_WARNINGS)
 	llvm-ar rc $(NAME).lib *.o
+	rm -f *.d
+	rm -f *.o
+	rm -f *.pdb
 
 clean:
 	rm -f *.d

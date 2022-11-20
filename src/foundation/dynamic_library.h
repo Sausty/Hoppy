@@ -14,8 +14,18 @@ namespace hoppy {
         const char* filepath;
     };
 
+    /// @brief Loads a dynamic library from the given filepath.
+    /// @param library A pointer to the dynamic library.
+    /// @param filepath The filepath of the library to load.
     void dynamic_library_load(dynamic_library *library, char const* filepath);
+    
+    /// @brief Frees a loaded dynamic library.
+    /// @param library A pointer to the dynamic library.
     void dynamic_library_free(dynamic_library *library);
+
+    /// @brief Loads a function from the given dynamic library
+    /// @param library A pointer to the dynamic library
+    /// @param name The name of the function to load
     void *dynamic_library_get_proc_addr(dynamic_library *library, char const *name);
 }
 
