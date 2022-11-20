@@ -19,6 +19,7 @@ $(NAME):
 clean:
 	rm -f ../$(NAME).d
 	rm -f ../$(NAME).ilk
+	rm -f ../$(NAME).pdb
 	
 fclean: clean
 	rm -f ../$(NAME).exe
