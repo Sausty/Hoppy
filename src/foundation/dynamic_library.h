@@ -9,8 +9,11 @@
 #define DYNAMIC_LIBRARY_H_
 
 namespace hoppy {
+    /// @brief A structure representing a dynamic library
     struct dynamic_library {
+        /// @brief The native handle of the dynamic library
         void* platform_handle;
+        /// @brief The filepath of the library
         const char* filepath;
     };
 
