@@ -1,0 +1,10 @@
+# IDE files
+*.vscode
+
+# Junk files
+*.a
+*.lib
+*.dll
+*.o
+*.ilk
+*.d
