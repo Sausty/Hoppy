@@ -8,11 +8,12 @@
 #include "foundation/timer.h"
 
 #include <Windows.h>
+#include <stdint.h>
 
 namespace hoppy {
     struct timer_win32 {
-        long long start;
-        long long frequency;
+        int64_t start;
+        int64_t frequency;
     };
 
     void timer_init(timer *t)
@@ -40,8 +41,8 @@ namespace hoppy {
         LARGE_INTEGER large;
         QueryPerformanceCounter(&large);
 
-        long long now = large.QuadPart;
-        long long time = now - data->start;
+        int64_t now = large.QuadPart;
+        int64_t time = now - data->start;
 
         return (float)((double)time / data->frequency);
     }

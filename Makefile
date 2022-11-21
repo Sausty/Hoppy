@@ -10,6 +10,7 @@ SOURCES = src/foundation/*.cpp \
 CXX_FLAGS = -g -MD -static -fdeclspec
 INCLUDE_FLAGS = -Isrc
 DISABLED_WARNINGS = -Wno-microsoft-cast
+LINKS = -luser32.lib
 NAME = hoppy
 
 all: $(NAME)
