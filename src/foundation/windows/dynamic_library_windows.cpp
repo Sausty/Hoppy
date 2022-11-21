@@ -23,6 +23,6 @@ namespace hoppy {
 
     void *dynamic_library_get_proc_addr(dynamic_library *library, char const *name)
     {
-        return GetProcAddress((HMODULE)library->platform_handle, name);
+        return reinterpret_cast<void*>(GetProcAddress((HMODULE)library->platform_handle, name));
     }
 }

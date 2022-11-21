@@ -11,12 +11,6 @@
 #include <stdint.h>
 
 namespace hoppy {
-    /// @brief A struct holding all the possible event data
-    struct event {
-        // TODO(milo.h): Events
-        int placeholder;
-    };
-
     /// @brief A window handle
     struct window {
         /// @brief The width of the window
@@ -33,7 +27,7 @@ namespace hoppy {
 
     void window_init(window *w, uint32_t width, uint32_t height, const char *title);
     void window_free(window *w);
-    void window_poll_events(window *w, event *e);
+    void window_poll_events(window *w);
     bool window_is_open(window *w);
 }
 

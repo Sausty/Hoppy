@@ -7,14 +7,14 @@
 
 NAME = sandbox
 SOURCES = *.cpp
-CXX_FLAGS = -g -MD -fdeclspec
+CXX_FLAGS = -g -MD
 INCLUDE_FLAGS = -I../../src
-LINKER_FLAGS = -L../../ -lhoppy.lib -luser32.lib
+LINKER_FLAGS = -L../../ -lhoppy
 
 all: $(NAME)
 
 $(NAME):
-	clang $(SOURCES) $(CXX_FLAGS) -o $(NAME).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+	g++ $(SOURCES) $(CXX_FLAGS) -o $(NAME).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
 clean:
 	rm -f $(NAME).d

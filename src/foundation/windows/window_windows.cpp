@@ -71,7 +71,7 @@ namespace hoppy {
         DestroyWindow(hwnd);
     }
 
-    void window_poll_events(window *w, event *e)
+    void window_poll_events(window *w)
     {
         HWND hwnd = reinterpret_cast<HWND>(w->platform_handle);
         MSG message;

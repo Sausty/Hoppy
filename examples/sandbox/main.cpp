@@ -8,6 +8,8 @@
 #include "foundation/log.h"
 #include "foundation/window.h"
 
+#include <iostream>
+
 int main()
 {
     hoppy::window window;
@@ -15,7 +17,7 @@ int main()
 
     while (hoppy::window_is_open(&window))
     {
-        hoppy::window_poll_events(&window, nullptr);
+        hoppy::window_poll_events(&window);
     }
     hoppy::window_free(&window);
 }
