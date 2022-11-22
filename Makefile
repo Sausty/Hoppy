@@ -9,7 +9,7 @@ SOURCES = src/foundation/*.cpp \
 		  src/foundation/windows/*.cpp
 CXX_STATIC_FLAGS = -D_CRT_SECURE_NO_WARNINGS
 INCLUDE_FLAGS = -Isrc
-DISABLED_WARNINGS = -Wno-microsoft-cast
+# DISABLED_WARNINGS = -Wno-microsoft-cast
 LINKS = -luser32.lib
 NAME = hoppy
 

@@ -6,6 +6,7 @@
 */
 
 #include "foundation/dynamic_library.h"
+#include "foundation/log.h"
 
 #include <Windows.h>
 
@@ -13,6 +14,10 @@ namespace hoppy {
     void dynamic_library_load(dynamic_library *library, char const* filepath)
     {
         library->platform_handle = LoadLibraryA(filepath);
+        if (!library->platform_handle) {
+            log_err("[ERROR] Failed to load dynamic library! (Path: %s)", filepath);
+        }
+
         library->filepath = filepath;
     }
 

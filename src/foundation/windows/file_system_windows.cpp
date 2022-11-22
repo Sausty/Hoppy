@@ -6,6 +6,7 @@
 */
 
 #include "foundation/file_system.h"
+#include "foundation/log.h"
 
 #include <Windows.h>
 
@@ -30,6 +31,7 @@ namespace hoppy {
 
         LARGE_INTEGER size;
         if (!GetFileSizeEx(file, &size)) {
+            log_err("[ERROR] Failed to get file size! (Path: %s)", filepath);
             CloseHandle(file);
             return -1;
         }
@@ -52,6 +54,7 @@ namespace hoppy {
                                   FILE_ATTRIBUTE_NORMAL, 
                                   NULL);
         if (!ReadFile(file, buffer, file_size, NULL, NULL)) {
+            log_err("[ERROR] Failed to read entire file! (Path: %s)", filepath);
             CloseHandle(file);
             return NULL;
         }
