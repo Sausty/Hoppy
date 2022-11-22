@@ -7,6 +7,7 @@
 
 #include "foundation/window.h"
 #include "foundation/log.h"
+#include "foundation/event.h"
 
 #include <Windows.h>
 
@@ -29,7 +30,20 @@ namespace hoppy {
         {
             window *w = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
             w->is_open = false;
-        }
+        } break;
+        case WM_SIZE:
+        {
+            RECT r;
+            GetClientRect(hwnd, &r);
+            AdjustWindowRect(&r, WS_OVERLAPPEDWINDOW, FALSE);
+            uint32_t width = r.right - r.left;
+            uint32_t height = r.bottom - r.top;
+			
+            event data;
+            data.payload.u32[0] = width;
+            data.payload.u32[1] = height;
+            event_system_fire(event_type::resize, nullptr, data);
+        } break;
         }
 
         return DefWindowProc(hwnd, msg, wparam, lparam);
@@ -43,7 +57,7 @@ namespace hoppy {
         w->is_open = true;
 
         WNDCLASSA window_class = {};
-        window_class.hInstance = GetModuleHandle(NULL);
+        window_class.hInstance = GetModuleHandle(nullptr);
         window_class.lpszClassName = "hoppy_window_class";
         window_class.lpfnWndProc = event_callback;
         RegisterClassA(&window_class);
@@ -55,8 +69,8 @@ namespace hoppy {
                                                   CW_USEDEFAULT,
                                                   width,
                                                   height,
-                                                  NULL,
-                                                  NULL,
+                                                  nullptr,
+                                                  nullptr,
                                                   window_class.hInstance,
                                                   w);
         if (!reinterpret_cast<HWND>(w->platform_handle)) {

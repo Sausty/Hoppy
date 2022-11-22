@@ -22,10 +22,10 @@ namespace hoppy {
         HANDLE file = CreateFileA(filepath, 
                                   GENERIC_READ, 
                                   FILE_SHARE_READ | FILE_SHARE_WRITE, 
-                                  NULL, 
+                                  nullptr, 
                                   OPEN_EXISTING, 
                                   FILE_ATTRIBUTE_NORMAL, 
-                                  NULL);
+                                  nullptr);
         if (file == INVALID_HANDLE_VALUE)
             return -1;
 
@@ -43,20 +43,20 @@ namespace hoppy {
     {
         int file_size = get_file_size(filepath);
         if (file_size == -1)
-            return NULL;
+            return nullptr;
 
         char* buffer = new char[file_size + 1];
         HANDLE file = CreateFileA(filepath, 
                                   GENERIC_READ, 
                                   FILE_SHARE_READ | FILE_SHARE_WRITE, 
-                                  NULL, 
+                                  nullptr, 
                                   OPEN_EXISTING, 
                                   FILE_ATTRIBUTE_NORMAL, 
-                                  NULL);
-        if (!ReadFile(file, buffer, file_size, NULL, NULL)) {
+                                  nullptr);
+        if (!ReadFile(file, buffer, file_size, nullptr, nullptr)) {
             log_err("[ERROR] Failed to read entire file! (Path: %s)", filepath);
             CloseHandle(file);
-            return NULL;
+            return nullptr;
         }
         buffer[file_size] = '\0';
         return buffer;
