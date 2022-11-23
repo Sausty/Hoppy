@@ -55,6 +55,12 @@ namespace hoppy {
     /// @param button The button to check
     /// @return True if the button is pressed; otherwise false
     bool input_is_gamepad_button_pressed(int index, gamepad_button button);
+
+    /// @brief Sets the speed of the rumble motors of the given gamepad
+    /// @param index The gamepad index
+    /// @param left The left speed of the motor, ranged [0, 1]
+    /// @param right The right speed of the motor, ranged [0, 1]
+    void input_set_gamepad_vibration(int index, float left, float right);
 }
 
 #endif /* !INPUT_H_ */
