@@ -7,6 +7,7 @@
 
 #include "foundation/log.h"
 #include "foundation/window.h"
+#include "foundation/input.h"
 
 #include <iostream>
 
@@ -14,10 +15,12 @@ int main()
 {
     hoppy::window window;
     hoppy::window_init(&window, 1280, 720, "Hoppy Window");
+    hoppy::input_init();
 
     while (hoppy::window_is_open(&window))
     {
         hoppy::window_poll_events(&window);
     }
+    hoppy::input_exit();
     hoppy::window_free(&window);
 }

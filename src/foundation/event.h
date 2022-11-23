@@ -15,8 +15,6 @@ namespace hoppy {
     enum class event_type {
         /// @brief Window has been resized
         resize,
-        /// @brief The mouse wheel has been scrolled
-        mouse_wheel,
         /// @brief A gamepad has been connected
         gamepad_connect,
         /// @brief A gamepad has been disconnected

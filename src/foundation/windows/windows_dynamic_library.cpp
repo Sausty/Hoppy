@@ -28,6 +28,10 @@ namespace hoppy {
 
     void *dynamic_library_get_proc_addr(dynamic_library *library, char const *name)
     {
-        return reinterpret_cast<void*>(GetProcAddress((HMODULE)library->platform_handle, name));
+        FARPROC proc = GetProcAddress((HMODULE)library->platform_handle, name);
+        if (!proc) {
+            log_err("[ERROR] Failed to load proc address! (Name: %s)", name);
+        }
+        return reinterpret_cast<void*>(proc);
     }
 }
