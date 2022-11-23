@@ -12,11 +12,13 @@
 
 #include <Windows.h>
 #include <Xinput.h>
+#include <map>
 
 namespace hoppy {
     struct gamepad_state {
         XINPUT_STATE state;
         bool connected;
+        std::map<gamepad_button, bool> buttons;
     };
 
     struct input_state {
@@ -62,6 +64,27 @@ namespace hoppy {
             }
 
             i_state.pads[i].connected = connected;
+            if (connected) {
+                i_state.pads[i].buttons[gamepad_button::a] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0;
+                i_state.pads[i].buttons[gamepad_button::b] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0;
+                i_state.pads[i].buttons[gamepad_button::x] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_X) != 0;
+                i_state.pads[i].buttons[gamepad_button::y] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_Y) != 0;
+                i_state.pads[i].buttons[gamepad_button::dpad_up] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) != 0;
+                i_state.pads[i].buttons[gamepad_button::dpad_down] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) != 0;
+                i_state.pads[i].buttons[gamepad_button::dpad_left] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
+                i_state.pads[i].buttons[gamepad_button::dpad_right] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
+                i_state.pads[i].buttons[gamepad_button::start] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_START) != 0;
+                i_state.pads[i].buttons[gamepad_button::back] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
+                i_state.pads[i].buttons[gamepad_button::left_thumb] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0;
+                i_state.pads[i].buttons[gamepad_button::left_shoulder] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
+                i_state.pads[i].buttons[gamepad_button::right_thumb] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
+                i_state.pads[i].buttons[gamepad_button::right_shoulder] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
+            }
         }
+    }
+
+    bool input_is_gamepad_button_pressed(int index, gamepad_button button)
+    {
+        return i_state.pads[index].buttons[button];
     }
 }
