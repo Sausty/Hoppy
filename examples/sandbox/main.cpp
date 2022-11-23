@@ -19,6 +19,7 @@ int main()
 
     while (hoppy::window_is_open(&window))
     {
+        hoppy::input_update();
         hoppy::window_poll_events(&window);
     }
     hoppy::input_exit();

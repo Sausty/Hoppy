@@ -14,6 +14,9 @@ namespace hoppy {
 
     /// @brief Exits the input system
     void input_exit();
+
+    /// @brief Updates the input system
+    void input_update();
 }
 
 #endif /* !INPUT_H_ */
