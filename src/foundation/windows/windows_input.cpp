@@ -12,6 +12,7 @@
 
 #include <Windows.h>
 #include <Xinput.h>
+#include <math.h>
 #include <map>
 
 namespace hoppy {
@@ -19,6 +20,7 @@ namespace hoppy {
         XINPUT_STATE state;
         bool connected;
         float vibration[2];
+        hmm_v2 joysticks[2];
         std::map<gamepad_button, bool> buttons;
     };
 
@@ -34,6 +36,25 @@ namespace hoppy {
 
     static dynamic_library xinput_library;
     static input_state i_state;
+
+    float normalize(float input, float min, float max)
+    {
+        float average = (min + max) / 2;
+        float range = (max - min) / 2;
+        return (input - average) / range;
+    }
+
+    float apply_deadzone(float value, float max_value, float deadzone)
+    {
+        if (value < -deadzone)
+            value += deadzone;
+        else if (value > deadzone)
+            value -= deadzone;
+        else
+            return 0;
+        float NormValue = value / (max_value - deadzone);
+        return std::max(-1.0f, std::min(NormValue, 1.0f));
+    }
 
     void input_init()
     {
@@ -87,6 +108,25 @@ namespace hoppy {
                 XISetState(i, &vibration);
 
                 i_state.pads[i].state = state;
+
+                hmm_v2 norm_left;
+                norm_left.X = normalize(state.Gamepad.sThumbLX, -32767, 32767);
+                norm_left.Y = normalize(state.Gamepad.sThumbLY, -32767, 32767);
+
+                hmm_v2 norm_right;
+                norm_right.X = normalize(state.Gamepad.sThumbRX, -32767, 32767);
+                norm_right.Y = normalize(state.Gamepad.sThumbRY, -32767, 32767);
+                
+                hmm_v2 left;
+                left.X = apply_deadzone(norm_left.X, 1.0f, normalize(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE, SHRT_MIN, SHRT_MAX));
+                left.Y = apply_deadzone(norm_left.Y, 1.0f, normalize(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE, SHRT_MIN, SHRT_MAX));
+
+                hmm_v2 right;
+                right.X = apply_deadzone(norm_right.X, 1.0f, normalize(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE, SHRT_MIN, SHRT_MAX));
+                right.Y = apply_deadzone(norm_right.Y, 1.0f, normalize(XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE, SHRT_MIN, SHRT_MAX));
+
+                i_state.pads[i].joysticks[JOYSTICK_LEFT] = left;
+                i_state.pads[i].joysticks[JOYSTICK_RIGHT] = right;
             }
         }
     }
@@ -94,6 +134,11 @@ namespace hoppy {
     bool input_is_gamepad_button_pressed(int index, gamepad_button button)
     {
         return i_state.pads[index].buttons[button];
+    }
+
+    hmm_v2 input_get_gamepad_joystick(int index, int joystick)
+    {
+        return i_state.pads[index].joysticks[joystick];
     }
 
     void input_set_gamepad_vibration(int index, float left, float right)

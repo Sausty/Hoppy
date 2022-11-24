@@ -8,6 +8,11 @@
 #ifndef INPUT_H_
 #define INPUT_H_
 
+#include "math/HandmadeMath.h"
+
+#define JOYSTICK_LEFT 0
+#define JOYSTICK_RIGHT 1
+
 namespace hoppy {
     /// @brief An enum representing all the buttons of a gamepad
     enum class gamepad_button {
@@ -55,6 +60,12 @@ namespace hoppy {
     /// @param button The button to check
     /// @return True if the button is pressed; otherwise false
     bool input_is_gamepad_button_pressed(int index, gamepad_button button);
+
+    /// @brief Returns the joystick values of the given gamepad
+    /// @param index The gamepad index
+    /// @param joystick The joystick to check (0 is left, 1 is right)
+    /// @return A vector containing the joystick values
+    hmm_v2 input_get_gamepad_joystick(int index, int joystick);
 
     /// @brief Sets the speed of the rumble motors of the given gamepad
     /// @param index The gamepad index
