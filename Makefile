@@ -5,18 +5,28 @@
 ## Makefile for the Hoppy engine
 ##
 
-SOURCES = src/foundation/*.cpp \
-		  src/foundation/windows/*.cpp
+SOURCES = src/foundation/*.cpp
 CXX_STATIC_FLAGS = -D_CRT_SECURE_NO_WARNINGS
 INCLUDE_FLAGS = -Isrc
-# DISABLED_WARNINGS = -Wno-microsoft-cast
-LINKS = -luser32.lib
 NAME = hoppy
+
+ifeq ($(OS), Windows_NT)
+	SOURCES = src/foundation/*.cpp src/foundation/windows/*.cpp
+	LINKS = -luser32.lib
+endif
+
+ifeq ($(OS), Linux)
+	SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp
+endif
+
+ifeq ($(OS), Darwin)
+	SOURCES = src/foundation/*.cpp src/foundation/macos/*.cpp
+endif
 
 all: $(NAME)
 
 $(NAME):
-	g++ -c -O0 $(SOURCES) $(CXX_STATIC_FLAGS) $(INCLUDE_FLAGS) $(DISABLED_WARNINGS)
+	g++ -c -O0 $(SOURCES) $(CXX_STATIC_FLAGS) $(INCLUDE_FLAGS)
 	ar rc $(NAME).lib *.o
 	rm -f *.d
 	rm -f *.o
