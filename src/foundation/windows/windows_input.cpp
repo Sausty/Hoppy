@@ -10,6 +10,8 @@
 #include "foundation/log.h"
 #include "foundation/event.h"
 
+#undef min
+#undef max
 #include <Windows.h>
 #include <Xinput.h>
 #include <math.h>
@@ -21,6 +23,7 @@ namespace hoppy {
         bool connected;
         float vibration[2];
         hmm_v2 joysticks[2];
+        hmm_v2 triggers;
         std::map<gamepad_button, bool> buttons;
     };
 
@@ -87,6 +90,7 @@ namespace hoppy {
 
             i_state.pads[i].connected = connected;
             if (connected) {
+                // NOTE(milo.h): Button polling
                 i_state.pads[i].buttons[gamepad_button::a] =              (state.Gamepad.wButtons & XINPUT_GAMEPAD_A) != 0;
                 i_state.pads[i].buttons[gamepad_button::b] =              (state.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0;
                 i_state.pads[i].buttons[gamepad_button::x] =              (state.Gamepad.wButtons & XINPUT_GAMEPAD_X) != 0;
@@ -102,6 +106,12 @@ namespace hoppy {
                 i_state.pads[i].buttons[gamepad_button::right_thumb] =    (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
                 i_state.pads[i].buttons[gamepad_button::right_shoulder] = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
             
+                // NOTE(milo.h): Triggers
+                float left_trigger = state.Gamepad.bLeftTrigger / 255;
+                float right_trigger = state.Gamepad.bRightTrigger / 255;
+                i_state.pads[i].triggers = HMM_Vec2(left_trigger, right_trigger);
+
+                // NOTE(milo.h): Vibrations
                 XINPUT_VIBRATION vibration;
                 vibration.wLeftMotorSpeed = i_state.pads[i].vibration[0] * 65335.0f;
                 vibration.wRightMotorSpeed = i_state.pads[i].vibration[1] * 65335.0f;
@@ -109,6 +119,7 @@ namespace hoppy {
 
                 i_state.pads[i].state = state;
 
+                // NOTE(milo.h): Joysticks
                 hmm_v2 norm_left;
                 norm_left.X = normalize(state.Gamepad.sThumbLX, -32767, 32767);
                 norm_left.Y = normalize(state.Gamepad.sThumbLY, -32767, 32767);
@@ -134,6 +145,11 @@ namespace hoppy {
     bool input_is_gamepad_button_pressed(int index, gamepad_button button)
     {
         return i_state.pads[index].buttons[button];
+    }
+
+    hmm_v2 input_get_gamepad_triggers(int index)
+    {
+        return i_state.pads[index].triggers;
     }
 
     hmm_v2 input_get_gamepad_joystick(int index, int joystick)

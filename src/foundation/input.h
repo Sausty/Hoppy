@@ -61,6 +61,11 @@ namespace hoppy {
     /// @return True if the button is pressed; otherwise false
     bool input_is_gamepad_button_pressed(int index, gamepad_button button);
 
+    /// @brief Returns the trigger values of the given gamepad
+    /// @param index The gamepad index
+    /// @return A vector containing the trigger values
+    hmm_v2 input_get_gamepad_triggers(int index);
+
     /// @brief Returns the joystick values of the given gamepad
     /// @param index The gamepad index
     /// @param joystick The joystick to check (0 is left, 1 is right)
