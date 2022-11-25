@@ -16,11 +16,11 @@ ifeq ($(OS), Windows_NT)
 endif
 
 ifeq ($(OS), Linux)
-	SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp
+	SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp src/audio/alsa/*.cpp
 endif
 
 ifeq ($(OS), Darwin)
-	SOURCES = src/foundation/*.cpp src/foundation/macos/*.cpp
+	SOURCES = src/foundation/*.cpp src/foundation/macos/*.mm src/audio/core_audio/*.mm
 endif
 
 all: $(NAME)

@@ -30,7 +30,7 @@ namespace hoppy {
         dynamic_library_load(&ds_state.dsound_library, "dsound.dll");
         DSCreate8 = (PFN_DIRECT_SOUND_CREATE_8)dynamic_library_get_proc_addr(&ds_state.dsound_library, "DirectSoundCreate8");
 
-        if (DSCreate8(NULL, &ds_state.dsound_device, NULL) != DS_OK) {
+        if (DSCreate8(nullptr, &ds_state.dsound_device, nullptr) != DS_OK) {
             log_err("[ERROR] Failed to create Direct Sound device!");
         }
         HRESULT result = IDirectSound8_SetCooperativeLevel(ds_state.dsound_device, (HWND)w->platform_handle, DSSCL_PRIORITY);
@@ -56,10 +56,10 @@ namespace hoppy {
         buffer_desc.dwSize = sizeof(DSBUFFERDESC);
         buffer_desc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_CTRL3D;
         buffer_desc.dwBufferBytes = 0;
-        buffer_desc.lpwfxFormat = NULL;
+        buffer_desc.lpwfxFormat = nullptr;
         buffer_desc.guid3DAlgorithm = guid_null;
 
-        result = IDirectSound8_CreateSoundBuffer(ds_state.dsound_device, &buffer_desc, &ds_state.primary_buffer, NULL);
+        result = IDirectSound8_CreateSoundBuffer(ds_state.dsound_device, &buffer_desc, &ds_state.primary_buffer, nullptr);
         if (FAILED(result)) {
             log_err("[ERROR] Failed to create primary sound buffer!");
         }
