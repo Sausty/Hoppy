@@ -25,7 +25,12 @@ namespace hoppy {
 
     bool input_is_key_pressed(keyboard_key key)
     {
-        
+        return false;
+    }
+
+    bool input_is_mouse_button_pressed(mouse_buttons button)
+    {
+        return false;
     }
 
     bool input_is_gamepad_button_pressed(int index, gamepad_button button)

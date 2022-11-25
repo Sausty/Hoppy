@@ -45,7 +45,8 @@ namespace hoppy {
         /// @brief The Y button
         y
     };
-
+    
+    /// @brief Represents available keyboard keys.
     enum class keyboard_key {
         /** @brief The backspace key. */
         backspace = 0x08,
@@ -300,6 +301,14 @@ namespace hoppy {
         grave = 0xC0,
     };
 
+    enum class mouse_buttons {
+        /** @brief The left mouse button */
+        left = 0x01,
+        /** @brief The right mouse button */
+        right = 0x02,
+        /** @brief The middle mouse button (typically the wheel) */
+        middle = 0x04,
+    };
 
     /// @brief Initialises the input system
     void input_init();
@@ -310,8 +319,13 @@ namespace hoppy {
     /// @brief Updates the input system
     void input_update();
 
-    /// @briefs Checks whether or not the given key is pressed
+    /// @brief Checks whether or not the given key is pressed
+    /// @return True if the key is pressed; otherwise false
     bool input_is_key_pressed(keyboard_key key);
+
+    /// @brief Checks whether or not the given mouse button is pressed
+    /// @return True if the button is pressed; otherwisef false
+    bool input_is_mouse_button_pressed(mouse_buttons button);
 
     /// @brief Checks whether or not the given gamepad button is pressed
     /// @param index The gamepad index

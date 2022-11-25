@@ -147,6 +147,11 @@ namespace hoppy {
         return GetAsyncKeyState((uint16_t)key) & 0x01;
     }
 
+    bool input_is_mouse_button_pressed(mouse_buttons button)
+    {
+        return ((GetKeyState((uint16_t)button) & 0x8000) != 0);
+    }
+
     bool input_is_gamepad_button_pressed(int index, gamepad_button button)
     {
         return i_state.pads[index].buttons[button];
