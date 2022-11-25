@@ -23,6 +23,11 @@ namespace hoppy {
         return;
     }
 
+    bool input_is_key_pressed(keyboard_key key)
+    {
+        
+    }
+
     bool input_is_gamepad_button_pressed(int index, gamepad_button button)
     {
         return false;
