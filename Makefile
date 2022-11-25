@@ -11,7 +11,7 @@ INCLUDE_FLAGS = -Isrc
 NAME = hoppy
 
 ifeq ($(OS), Windows_NT)
-	SOURCES = src/foundation/*.cpp src/foundation/windows/*.cpp
+	SOURCES = src/foundation/*.cpp src/foundation/windows/*.cpp src/audio/direct_sound/*.cpp
 	LINKS = -luser32.lib
 endif
 
