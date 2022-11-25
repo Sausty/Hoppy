@@ -8,7 +8,7 @@
 #ifndef INPUT_H_
 #define INPUT_H_
 
-#include "math/HandmadeMath.h"
+#include "math/HandmadeMath.hpp"
 
 #define JOYSTICK_LEFT 0
 #define JOYSTICK_RIGHT 1
