@@ -1,5 +1,5 @@
 # IDE files
-*.vscode
+.vscode/
 
 # Junk files
 *.a
@@ -9,3 +9,6 @@
 *.ilk
 *.d
 *.exe
+
+# Junk directories
+docs/
