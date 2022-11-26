@@ -22,5 +22,5 @@ Some of the features that we want to add include:
 - User capability to write custom shaders for the renderer
 - User capability to write compute shaders and interact with the GPU easily
 - A cross platform RHI supporting many APIs
-- A scripting module with 3 possible scripting languages (AngelScript, C# and Lua)
+- A scripting module powered by AngelScript
 - A simple yet powerful world management with an ECS
