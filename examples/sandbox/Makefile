@@ -9,12 +9,18 @@ NAME = sandbox
 SOURCES = *.cpp
 CXX_FLAGS = -g -MD
 INCLUDE_FLAGS = -I../../src
-LINKER_FLAGS = -L../../ -lhoppy
+LINKER_FLAGS = -L../../ -lhoppy -lX11 -lX11-xcb -lxcb -L/usr/X11R6/lib
+
+ifeq ($(OS), Windows_NT)
+	OUTPUT = $(NAME).exe
+else
+	OUTPUT = $(NAME)
+endif
 
 all: $(NAME)
 
 $(NAME):
-	g++ $(SOURCES) $(CXX_FLAGS) -o $(NAME).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+	g++ $(SOURCES) $(CXX_FLAGS) -o $(OUTPUT) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
 clean:
 	rm -f $(NAME).d
@@ -22,7 +28,7 @@ clean:
 	rm -f $(NAME).pdb
 	
 fclean: clean
-	rm -f $(NAME).exe
+	rm -f $(OUTPUT)
 
 re: fclean all
 

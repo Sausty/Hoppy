@@ -8,7 +8,7 @@
 #include "audio/audio.h"
 
 namespace hoppy {
-    void audio_init()
+    void audio_init(hoppy::window *w)
     {
         return;
     }

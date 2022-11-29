@@ -6,6 +6,7 @@
 ##
 
 SOURCES = src/foundation/*.cpp
+EXTENSION = lib
 CXX_STATIC_FLAGS = -D_CRT_SECURE_NO_WARNINGS
 INCLUDE_FLAGS = -Isrc
 NAME = hoppy
@@ -13,21 +14,25 @@ NAME = hoppy
 ifeq ($(OS), Windows_NT)
 	SOURCES = src/foundation/*.cpp src/foundation/windows/*.cpp src/audio/direct_sound/*.cpp
 	LINKS = -luser32.lib
-endif
-
-ifeq ($(OS), Linux)
-	SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp src/audio/alsa/*.cpp
-endif
-
-ifeq ($(OS), Darwin)
-	SOURCES = src/foundation/*.cpp src/foundation/macos/*.mm src/audio/core_audio/*.mm
+	OUTPUT = hoppy.lib
+else
+	UNAME_S = $(shell uname -s)
+	ifeq ($(UNAME_S), Linux)
+		SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp src/audio/alsa/*.cpp
+		LINKS = -lX11 -lX11-xcb -lxcb -L/usr/X11R6/lib
+		OUTPUT = libhoppy.a
+	endif
+	ifeq ($(UNAME_S), Darwin)
+		SOURCES = src/foundation/*.cpp src/foundation/macos/*.mm src/audio/core_audio/*.mm
+		OUTPUT = libhoppy.a
+	endif
 endif
 
 all: $(NAME)
 
 $(NAME):
 	g++ -c -O0 $(SOURCES) $(CXX_STATIC_FLAGS) $(INCLUDE_FLAGS)
-	ar rc $(NAME).lib *.o
+	ar rc $(OUTPUT) *.o
 	rm -f *.d
 	rm -f *.o
 
@@ -37,7 +42,7 @@ clean:
 	rm -f *.pdb
 
 fclean: clean
-	rm -f $(NAME).lib
+	rm -f $(OUTPUT)
 
 re: fclean all
 
