@@ -99,17 +99,7 @@ namespace hoppy {
                         x_state.is_open = false;
                     }
                 } break;
-                default: {switch (event->response_type & ~0x80) {
-                case XCB_CLIENT_MESSAGE: {
-                    custom_client_message = (xcb_client_message_event_t*)event;
-                    if (custom_client_message->data.data32[0] == x_state.delete_win) {
-                        x_state.is_open = false;
-                    }
-                } break;
                 default: {
-                    break;
-                }
-            }
                     break;
                 }
             }
