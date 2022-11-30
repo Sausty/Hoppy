@@ -30,7 +30,6 @@ namespace hoppy {
     
     void window_init(window *w, uint32_t width, uint32_t height, const char *title)
     {
-        // TODO(milo.h): Doesn't work!!!!!!
         x_state.is_open = true;
 
         x_state.display = XOpenDisplay(nullptr);
@@ -49,6 +48,8 @@ namespace hoppy {
             xcb_screen_next(&iterator);
         }
         x_state.screen = iterator.data;
+
+        x_state.window = xcb_generate_id(x_state.connection);
 
         uint32_t event_mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
         uint32_t event_listeners = XCB_EVENT_MASK_BUTTON_PRESS | XCB_EVENT_MASK_BUTTON_RELEASE |
@@ -98,7 +99,17 @@ namespace hoppy {
                         x_state.is_open = false;
                     }
                 } break;
+                default: {switch (event->response_type & ~0x80) {
+                case XCB_CLIENT_MESSAGE: {
+                    custom_client_message = (xcb_client_message_event_t*)event;
+                    if (custom_client_message->data.data32[0] == x_state.delete_win) {
+                        x_state.is_open = false;
+                    }
+                } break;
                 default: {
+                    break;
+                }
+            }
                     break;
                 }
             }
