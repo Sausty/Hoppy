@@ -10,5 +10,8 @@
 *.d
 *.exe
 
+# Output files
+sandbox
+
 # Junk directories
 docs/

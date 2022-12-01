@@ -7,19 +7,25 @@
 
 #include "foundation/dynamic_library.h"
 
+#include <fcntl.h>
+#include <dlfcn.h>
+
 namespace hoppy {
     void dynamic_library_load(dynamic_library *library, char const* filepath)
     {
-        return;
+        library->platform_handle = dlopen(filepath, RTLD_NOW);
+        if (!library->platform_handle) {
+            log_err("[ERROR] Failed to load dynamic library! (Path: %s)", filepath);
+        }
     }
 
     void dynamic_library_free(dynamic_library *library)
     {
-        return;
+        dlclose(library->platform_handle);
     }
 
     void *dynamic_library_get_proc_addr(dynamic_library *library, char const *name)
     {
-        return nullptr;
+        return dlsym(library->platform_handle, name);
     }
 }
