@@ -12,18 +12,27 @@ INCLUDE_FLAGS = -Isrc
 NAME = hoppy
 
 ifeq ($(OS), Windows_NT)
-	SOURCES = src/foundation/*.cpp src/foundation/windows/*.cpp src/audio/direct_sound/*.cpp
+	SOURCE_FOUNDATION = src/foundation/*.cpp src/foundation/windows/*cpp
+	SOURCE_AUDIO = src/audio/direct_sound/*.cpp
+	SOURCE_RHI = src/rhi/vulkan/*.cpp
+	SOURCES = $(SOURCE_FOUNDATION) $(SOURCE_AUDIO) $(SOURCE_RHI)
 	LINKS = -luser32.lib
 	OUTPUT = hoppy.lib
 else
 	UNAME_S = $(shell uname -s)
 	ifeq ($(UNAME_S), Linux)
-		SOURCES = src/foundation/*.cpp src/foundation/linux/*.cpp src/audio/alsa/*.cpp
+		SOURCE_FOUNDATION = src/foundation/*.cpp src/foundation/linux/*.cpp
+		SOURCE_AUDIO = src/audio/alsa/*.cpp
+		SOURCE_RHI = src/rhi/vulkan/*.cpp
+		SOURCES = $(SOURCE_FOUNDATION) $(SOURCE_AUDIO) $(SOURCE_RHI)
 		LINKS = -lX11 -lX11-xcb -lxcb -L/usr/X11R6/lib
 		OUTPUT = libhoppy.a
 	endif
 	ifeq ($(UNAME_S), Darwin)
-		SOURCES = src/foundation/*.cpp src/foundation/macos/*.mm src/audio/core_audio/*.mm
+		SOURCE_FOUNDATION = src/foundation/*.cpp src/foundation/macos/*.mm
+		SOURCE_AUDIO = src/audio/core_audio/*.mm
+		SOURCE_RHI = src/rhi/vulkan/*.cpp
+		SOURCES = $(SOURCE_FOUNDATION) $(SOURCE_AUDIO) $(SOURCE_RHI)
 		OUTPUT = libhoppy.a
 	endif
 endif

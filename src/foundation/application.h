@@ -14,6 +14,7 @@ namespace hoppy {
     /// @brief Represents an application
     struct application {
         window w;
+        bool was_closed;
     };
 
     /// @brief Initialises the application and all of the engine's submodules
@@ -22,6 +23,10 @@ namespace hoppy {
     /// @param height The height of the application window
     /// @param title The title of the application window
     void application_init(application *app, int width, int height, char const *title);
+
+    /// @brief Closes the application's window
+    /// @param app The application to close
+    void application_close(application *app);
 
     /// @brief Destroys the given application and shuts down the engine
     /// @param app A pointer to the application to destroy

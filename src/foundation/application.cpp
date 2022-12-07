@@ -9,19 +9,33 @@
 
 #include "audio/audio.h"
 #include "foundation/input.h"
+#include "rhi/rhi.h"
 
 namespace hoppy {
     void application_init(application *app, int width, int height, char const *title) {
         window_init(&app->w, width, height, title);
         input_init();
         audio_init(&app->w);
+        rhi_connect_window(&app->w);
+        rhi_init();
+    }
+
+    void application_close(application *app)
+    {
+        if (!app->was_closed) {
+            application_free(app);
+            app->was_closed = true;
+        }
     }
 
     void application_free(application *app)
     {
-        audio_exit();
-        input_exit();
-        window_free(&app->w);
+        if (!app->was_closed) {
+            rhi_exit();
+            audio_exit();
+            input_exit();
+            window_free(&app->w);
+        }
     }
 
     bool application_is_running(application *app)

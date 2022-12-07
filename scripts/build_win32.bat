@@ -1,4 +1,4 @@
-make -j 8
+make re -j 8
 cd examples/sandbox
-make -j 8
+make re -j 8
 cd ../../

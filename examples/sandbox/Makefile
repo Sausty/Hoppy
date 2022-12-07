@@ -9,11 +9,12 @@ NAME = sandbox
 SOURCES = *.cpp
 CXX_FLAGS = -g -MD
 INCLUDE_FLAGS = -I../../src
-LINKER_FLAGS = -L../../ -lhoppy -lX11 -lX11-xcb -lxcb -L/usr/X11R6/lib
+LINKER_FLAGS = -L../../ -lhoppy
 
 ifeq ($(OS), Windows_NT)
 	OUTPUT = $(NAME).exe
 else
+	LINKER_FLAGS = -L../../ -L/usr/X11R6/lib -lX11 -lX11-xcb -lxcb -lhoppy
 	OUTPUT = $(NAME)
 endif
 
