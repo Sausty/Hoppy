@@ -28,8 +28,11 @@ namespace hoppy {
         ID3D12Device* device;
         ID3D12Debug1* debug;
         ID3D12DebugDevice* debug_device;
+
+        ID3D12CommandQueue* cmd_queue;
     };
 
+    // PRIVATE: DO NOT ACCESS ANY MEMBER OF THIS STRUCTURE
     extern d3d12_state d3d12;
 }
 

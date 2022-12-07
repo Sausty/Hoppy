@@ -67,17 +67,7 @@ namespace hoppy {
         *ret_adapter = adapter;
     }
 
-    rhi_backend rhi_get_backend()
-    {
-        return rhi_backend::d3d12;
-    }
-
-    void rhi_connect_window(window *w)
-    {
-        d3d12.w = w;
-    }
-
-    void rhi_init()
+    void init_libs(void)
     {
         dynamic_library_load(&d3d12.d3d_lib, "d3d12.dll");
         D3D12CreateDevice = (d3d12_create_device*)dynamic_library_get_proc_addr(&d3d12.d3d_lib, "D3D12CreateDevice");
@@ -89,7 +79,10 @@ namespace hoppy {
 
         dynamic_library_load(&d3d12.d3dc_lib, "d3dcompiler_47.dll");
         D3DCompile = (d3d_compile*)dynamic_library_get_proc_addr(&d3d12.d3dc_lib, "D3DCompile");
+    }
 
+    void init_device(void)
+    {
         HRESULT result = D3D12GetDebugInterface(IID_PPV_ARGS(&d3d12.debug));
         if (FAILED(result)) {
             log_crit("[ERROR] Failed to acquire D3D12 debug interface!");
@@ -145,8 +138,35 @@ namespace hoppy {
         log_info("[INFO] Using GPU %s for D3D12", device_name.c_str());
     }
 
+    void init_cmd_queue(void)
+    {
+        D3D12_COMMAND_QUEUE_DESC queue_desc = {};
+        HRESULT result = d3d12.device->CreateCommandQueue(&queue_desc, IID_PPV_ARGS(&d3d12.cmd_queue));
+        if (FAILED(result)) {
+            log_crit("[ERROR] Failed to create D3D12 command queue!");
+        }
+    }
+
+    rhi_backend rhi_get_backend()
+    {
+        return rhi_backend::d3d12;
+    }
+
+    void rhi_connect_window(window *w)
+    {
+        d3d12.w = w;
+    }
+
+    void rhi_init()
+    {
+        init_libs();
+        init_device();
+        init_cmd_queue();
+    }
+
     void rhi_exit()
     {
+        SafeRelease(d3d12.cmd_queue);
         SafeRelease(d3d12.device);
         SafeRelease(d3d12.factory);
         SafeRelease(d3d12.adapter);

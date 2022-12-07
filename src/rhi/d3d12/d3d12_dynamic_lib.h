@@ -19,6 +19,8 @@
 #define D3D_COMPILE(name) HRESULT name(LPCVOID pSrcData, SIZE_T SrcDataSize, LPCSTR pSourceName, const D3D_SHADER_MACRO *pDefines, ID3DInclude *pInclude, LPCSTR pEntrypoint, LPCSTR pTarget, UINT Flags1, UINT Flags2, ID3DBlob **ppCode, ID3DBlob **ppErrorMsgs)
 
 namespace hoppy {
+    // PRIVATE: DO NOT ACCESS THOSE
+
     typedef D3D12_CREATE_DEVICE(d3d12_create_device);
     typedef D3D12_GET_DEBUG_INTERFACE(d3d12_get_debug_interface);
     typedef CREATE_DXGI_FACTORY(create_dxgi_factory);
