@@ -12,6 +12,11 @@
 namespace hoppy {
     vulkan_state v_state;
 
+    rhi_backend rhi_get_backend()
+    {
+        return rhi_backend::vulkan;
+    }
+
     void rhi_connect_window(window *w) 
     {
         v_state.connected_window = w;

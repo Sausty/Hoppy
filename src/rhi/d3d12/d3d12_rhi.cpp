@@ -67,6 +67,11 @@ namespace hoppy {
         *ret_adapter = adapter;
     }
 
+    rhi_backend rhi_get_backend()
+    {
+        return rhi_backend::d3d12;
+    }
+
     void rhi_connect_window(window *w)
     {
         d3d12.w = w;
