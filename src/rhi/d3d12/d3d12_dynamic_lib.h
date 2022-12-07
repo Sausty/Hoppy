@@ -10,7 +10,7 @@
 
 #include <d3d12.h>
 
-#define SafeRelease(obj) if (obj) { obj->lpVtbl->Release(obj); }
+#define SafeRelease(obj) if (obj) { obj->Release(); }
 
 #define D3D12_CREATE_DEVICE(name) HRESULT name(IUnknown *pAdapter, D3D_FEATURE_LEVEL MinimumFeatureLevel, REFIID riid, void **ppDevice)
 #define D3D12_GET_DEBUG_INTERFACE(name) HRESULT name(REFIID riid, void **ppvDebug)
