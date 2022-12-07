@@ -14,7 +14,7 @@ NAME = hoppy
 ifeq ($(OS), Windows_NT)
 	SOURCE_FOUNDATION = src/foundation/*.cpp src/foundation/windows/*cpp
 	SOURCE_AUDIO = src/audio/direct_sound/*.cpp
-	SOURCE_RHI = src/rhi/vulkan/*.cpp
+	SOURCE_RHI = src/rhi/d3d12/*.cpp
 	SOURCES = $(SOURCE_FOUNDATION) $(SOURCE_AUDIO) $(SOURCE_RHI)
 	LINKS = -luser32.lib
 	OUTPUT = hoppy.lib
@@ -40,7 +40,7 @@ endif
 all: $(NAME)
 
 $(NAME):
-	g++ -c -O0 $(SOURCES) $(CXX_STATIC_FLAGS) $(INCLUDE_FLAGS)
+	clang -c -O0 $(SOURCES) $(CXX_STATIC_FLAGS) $(INCLUDE_FLAGS)
 	ar rc $(OUTPUT) *.o
 	rm -f *.d
 	rm -f *.o

@@ -10,8 +10,7 @@
 #include "foundation/log.h"
 #include "foundation/event.h"
 
-#undef min
-#undef max
+#define NOMINMAX
 #include <Windows.h>
 #include <Xinput.h>
 #include <math.h>

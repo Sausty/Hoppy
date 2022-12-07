@@ -12,6 +12,7 @@ INCLUDE_FLAGS = -I../../src
 LINKER_FLAGS = -L../../ -lhoppy
 
 ifeq ($(OS), Windows_NT)
+	LINKER_FLAGS = -L../../ -lhoppy -luser32
 	OUTPUT = $(NAME).exe
 else
 	LINKER_FLAGS = -L../../ -L/usr/X11R6/lib -lX11 -lX11-xcb -lxcb -lhoppy
@@ -21,7 +22,7 @@ endif
 all: $(NAME)
 
 $(NAME):
-	g++ $(SOURCES) $(CXX_FLAGS) -o $(OUTPUT) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+	clang $(SOURCES) $(CXX_FLAGS) -o $(OUTPUT) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
 clean:
 	rm -f $(NAME).d
