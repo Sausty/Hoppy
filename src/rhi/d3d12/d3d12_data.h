@@ -13,7 +13,12 @@
 
 #include "foundation/window.h"
 #include "foundation/dynamic_library.h"
+
 #include "rhi/rhi.h"
+
+#include "d3d12_fence.h"
+
+#define SafeRelease(obj) if (obj) { obj->Release(); }
 
 namespace hoppy {
     struct d3d12_state {
@@ -30,6 +35,8 @@ namespace hoppy {
         ID3D12DebugDevice* debug_device;
 
         ID3D12CommandQueue* cmd_queue;
+
+        d3d12_fence device_fence;
     };
 
     // PRIVATE: DO NOT ACCESS ANY MEMBER OF THIS STRUCTURE

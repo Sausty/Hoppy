@@ -162,10 +162,12 @@ namespace hoppy {
         init_libs();
         init_device();
         init_cmd_queue();
+        d3d12_fence_init(&d3d12.device_fence);
     }
 
     void rhi_exit()
     {
+        d3d12_fence_free(&d3d12.device_fence);
         SafeRelease(d3d12.cmd_queue);
         SafeRelease(d3d12.device);
         SafeRelease(d3d12.factory);
