@@ -184,10 +184,12 @@ namespace hoppy {
         d3d12_fence_init(&d3d12.device_fence);
         d3d12_descriptor_heap_init(&d3d12.rtv_heap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 512);
         init_cmds();
+        d3d12_swapchain_init(&d3d12.swapchain);
     }
 
     void rhi_exit()
     {
+        d3d12_swapchain_free(&d3d12.swapchain);
         for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
             SafeRelease(d3d12.cmd_lists[i]);
             SafeRelease(d3d12.cmd_allocators[i]);

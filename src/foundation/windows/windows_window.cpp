@@ -60,7 +60,7 @@ namespace hoppy {
         window_class.hInstance = GetModuleHandle(nullptr);
         window_class.lpszClassName = "hoppy_window_class";
         window_class.lpfnWndProc = event_callback;
-        window_class.hbrBackground  = (HBRUSH)BLACK_BRUSH;
+        window_class.hbrBackground  = (HBRUSH)GRAY_BRUSH;
         RegisterClassA(&window_class);
 
         w->platform_handle = (void*)CreateWindowA(window_class.lpszClassName,

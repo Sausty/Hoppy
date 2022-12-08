@@ -40,14 +40,14 @@ namespace hoppy {
     D3D12_CPU_DESCRIPTOR_HANDLE d3d12_descriptor_cpu(d3d12_descriptor_heap *heap, uint32_t offset)
     {
         D3D12_CPU_DESCRIPTOR_HANDLE handle = heap->heap->GetCPUDescriptorHandleForHeapStart();
-        handle.ptr += offset;
+        handle.ptr += offset * heap->increment_size;
         return (handle);
     }
 
     D3D12_GPU_DESCRIPTOR_HANDLE d3d12_descriptor_gpu(d3d12_descriptor_heap *heap, uint32_t offset)
     {
         D3D12_GPU_DESCRIPTOR_HANDLE handle = heap->heap->GetGPUDescriptorHandleForHeapStart();
-        handle.ptr += offset;
+        handle.ptr += offset * heap->increment_size;
         return (handle);
     }
 

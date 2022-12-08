@@ -18,6 +18,7 @@
 
 #include "d3d12_fence.h"
 #include "d3d12_descriptor_heap.h"
+#include "d3d12_swapchain.h"
 
 #define SafeRelease(obj) if (obj) { obj->Release(); }
 
@@ -42,6 +43,8 @@ namespace hoppy {
         d3d12_fence device_fence;
 
         d3d12_descriptor_heap rtv_heap;
+
+        d3d12_swapchain swapchain;
     };
 
     // PRIVATE: DO NOT ACCESS ANY MEMBER OF THIS STRUCTURE
