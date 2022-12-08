@@ -17,6 +17,7 @@
 #include "rhi/rhi.h"
 
 #include "d3d12_fence.h"
+#include "d3d12_descriptor_heap.h"
 
 #define SafeRelease(obj) if (obj) { obj->Release(); }
 
@@ -37,6 +38,8 @@ namespace hoppy {
         ID3D12CommandQueue* cmd_queue;
 
         d3d12_fence device_fence;
+
+        d3d12_descriptor_heap rtv_heap;
     };
 
     // PRIVATE: DO NOT ACCESS ANY MEMBER OF THIS STRUCTURE

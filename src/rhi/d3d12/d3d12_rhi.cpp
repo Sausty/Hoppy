@@ -163,10 +163,12 @@ namespace hoppy {
         init_device();
         init_cmd_queue();
         d3d12_fence_init(&d3d12.device_fence);
+        d3d12_descriptor_heap_init(&d3d12.rtv_heap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 512);
     }
 
     void rhi_exit()
     {
+        d3d12_descriptor_heap_free(&d3d12.rtv_heap);
         d3d12_fence_free(&d3d12.device_fence);
         SafeRelease(d3d12.cmd_queue);
         SafeRelease(d3d12.device);
