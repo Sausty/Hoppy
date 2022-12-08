@@ -8,6 +8,8 @@
 #ifndef RHI_H_
 #define RHI_H_
 
+#define FRAMES_IN_FLIGHT 3
+
 #include "foundation/window.h"
 
 namespace hoppy {

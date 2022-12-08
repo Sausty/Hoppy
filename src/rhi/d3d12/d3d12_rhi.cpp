@@ -147,6 +147,25 @@ namespace hoppy {
         }
     }
 
+    void init_cmds(void)
+    {
+        HRESULT result;
+        for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
+            result = d3d12.device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&d3d12.cmd_allocators[i]));
+            if (FAILED(result)) {
+                log_crit("[ERROR] Failed to create D3D12 command allocator!");
+            }
+            result = d3d12.device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, d3d12.cmd_allocators[i], nullptr, IID_PPV_ARGS(&d3d12.cmd_lists[i]));
+            if (FAILED(result)) {
+                log_crit("[ERROR] Failed to create D3D12 command list!");
+            }
+            result = d3d12.cmd_lists[i]->Close();
+            if (FAILED(result)) {
+                log_crit("[ERROR] Failed to close D3D12 command list!");
+            }
+        }
+    }
+
     rhi_backend rhi_get_backend()
     {
         return rhi_backend::d3d12;
@@ -164,10 +183,15 @@ namespace hoppy {
         init_cmd_queue();
         d3d12_fence_init(&d3d12.device_fence);
         d3d12_descriptor_heap_init(&d3d12.rtv_heap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 512);
+        init_cmds();
     }
 
     void rhi_exit()
     {
+        for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
+            SafeRelease(d3d12.cmd_lists[i]);
+            SafeRelease(d3d12.cmd_allocators[i]);
+        }
         d3d12_descriptor_heap_free(&d3d12.rtv_heap);
         d3d12_fence_free(&d3d12.device_fence);
         SafeRelease(d3d12.cmd_queue);

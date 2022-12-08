@@ -36,6 +36,8 @@ namespace hoppy {
         ID3D12DebugDevice* debug_device;
 
         ID3D12CommandQueue* cmd_queue;
+        ID3D12CommandAllocator *cmd_allocators[FRAMES_IN_FLIGHT];
+        ID3D12GraphicsCommandList1 *cmd_lists[FRAMES_IN_FLIGHT];
 
         d3d12_fence device_fence;
 
