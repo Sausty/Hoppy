@@ -102,4 +102,14 @@ namespace hoppy {
     {
         return w->is_open;
     }
+
+    hmm_vec2 window_get_size(window *w)
+    {
+        hmm_vec2 result;
+        RECT client_rect;
+        GetClientRect((HWND)w->platform_handle, &client_rect);
+        result.X = client_rect.right - client_rect.left;
+        result.Y = client_rect.bottom - client_rect.top;
+        return (result);
+    }
 }

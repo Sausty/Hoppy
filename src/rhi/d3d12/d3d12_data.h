@@ -11,6 +11,8 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 
+#include "math/HandmadeMath.hpp"
+
 #include "foundation/window.h"
 #include "foundation/dynamic_library.h"
 
@@ -45,6 +47,8 @@ namespace hoppy {
         d3d12_descriptor_heap rtv_heap;
 
         d3d12_swapchain swapchain;
+        uint64_t frame_sync[FRAMES_IN_FLIGHT];
+        uint32_t frame_index;
     };
 
     // PRIVATE: DO NOT ACCESS ANY MEMBER OF THIS STRUCTURE

@@ -171,6 +171,11 @@ namespace hoppy {
         return rhi_backend::d3d12;
     }
 
+    void wait_device()
+    {
+        d3d12_fence_flush(&d3d12.device_fence);
+    }
+
     void rhi_connect_window(window *w)
     {
         d3d12.w = w;
@@ -189,6 +194,8 @@ namespace hoppy {
 
     void rhi_exit()
     {
+        d3d12_fence_flush(&d3d12.device_fence);
+
         d3d12_swapchain_free(&d3d12.swapchain);
         for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
             SafeRelease(d3d12.cmd_lists[i]);
@@ -206,5 +213,37 @@ namespace hoppy {
         dynamic_library_free(&d3d12.d3dc_lib);
         dynamic_library_free(&d3d12.d3d_lib);
         dynamic_library_free(&d3d12.dxgi_lib);
+    }
+
+    void rhi_begin()
+    {
+        hmm_vec2 window_size = window_get_size(d3d12.w);
+        if (window_size.X <= 0 || window_size.Y <= 0)
+            return;
+
+        d3d12.frame_index = d3d12_swapchain_get_image_index(&d3d12.swapchain);
+        d3d12_fence_sync(&d3d12.device_fence, d3d12.frame_sync[d3d12.frame_index]);
+
+        auto allocator = d3d12.cmd_allocators[d3d12.frame_index];
+        auto list = d3d12.cmd_lists[d3d12.frame_index];
+
+        allocator->Reset();
+        list->Reset(allocator, NULL);
+    }
+
+    void rhi_end()
+    {
+        hmm_vec2 window_size = window_get_size(d3d12.w);
+        if (window_size.X <= 0 || window_size.Y <= 0)
+            return;
+
+        auto list = d3d12.cmd_lists[d3d12.frame_index];
+        list->Close();
+
+        ID3D12CommandList* command_lists[] = { list };
+        d3d12.cmd_queue->ExecuteCommandLists(1, command_lists);
+
+        d3d12_swapchain_present(&d3d12.swapchain, true);
+        d3d12.frame_sync[d3d12.frame_index] = d3d12_fence_signal(&d3d12.device_fence);
     }
 }

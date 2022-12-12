@@ -20,12 +20,12 @@ namespace hoppy {
         IDXGISwapChain3 *swapchain;
         ID3D12Resource *swapchain_buffers[FRAMES_IN_FLIGHT];
         uint32_t render_targets[FRAMES_IN_FLIGHT];
-        uint32_t frame_index;
     };
 
     void d3d12_swapchain_init(d3d12_swapchain *swapchain);
     void d3d12_swapchain_free(d3d12_swapchain *swapchain);
     void d3d12_swapchain_present(d3d12_swapchain *swapchain, bool vsync);
+    uint32_t d3d12_swapchain_get_image_index(d3d12_swapchain *swapchain);
 }
 
 #endif /* !D3D12_SWAPCHAIN_H_ */

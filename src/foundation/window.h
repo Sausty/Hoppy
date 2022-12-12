@@ -10,6 +10,8 @@
 
 #include <cstdint>
 
+#include "math/HandmadeMath.hpp"
+
 namespace hoppy {
     /// @brief A window handle
     struct window {
@@ -44,6 +46,11 @@ namespace hoppy {
     /// @param w A pointer to the window
     /// @return True if the window is open; otherwise false
     bool window_is_open(window *w);
+
+    /// @brief Gets the current size of the window
+    /// @param w A pointer to the concerned window
+    /// @return The size of tje window
+    hmm_vec2 window_get_size(window *w);
 }
 
 #endif

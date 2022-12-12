@@ -12,19 +12,9 @@
 #include "math/HandmadeMath.hpp"
 
 namespace hoppy {
-    hmm_vec2 get_window_size()
-    {
-        hmm_vec2 result;
-        RECT client_rect;
-        GetClientRect((HWND)d3d12.w->platform_handle, &client_rect);
-        result.X = client_rect.right - client_rect.left;
-        result.Y = client_rect.bottom - client_rect.top;
-        return (result);
-    }
-
     void d3d12_swapchain_init(d3d12_swapchain *swapchain)
     {
-        hmm_vec2 window_size = get_window_size();
+        hmm_vec2 window_size = window_get_size(d3d12.w);
         
         DXGI_SWAP_CHAIN_DESC1 desc = {};
         desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -36,13 +26,19 @@ namespace hoppy {
         desc.Width = window_size.X;
         desc.Height = window_size.Y;
 
-        IDXGISwapChain1* temp = nullptr;
-        d3d12.factory->CreateSwapChainForHwnd(d3d12.cmd_queue, (HWND)d3d12.w->platform_handle, &desc, NULL, NULL, &temp);
+        IDXGISwapChain1* temp;
+        HRESULT result = d3d12.factory->CreateSwapChainForHwnd(d3d12.cmd_queue, (HWND)d3d12.w->platform_handle, &desc, NULL, NULL, &temp);
+        if (FAILED(result)) {
+            log_crit("[ERROR] Failed to create swapchain!");
+        }
         temp->QueryInterface(IID_PPV_ARGS(&swapchain->swapchain));
         SafeRelease(temp);
 
         for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
-            swapchain->swapchain->GetBuffer(i, IID_PPV_ARGS(&swapchain->swapchain_buffers[i]));
+            result = swapchain->swapchain->GetBuffer(i, IID_PPV_ARGS(&swapchain->swapchain_buffers[i]));
+            if (FAILED(result)) {
+                log_crit("[ERROR] Failed to get swapchain buffer!");
+            }
             swapchain->render_targets[i] = d3d12_descriptor_alloc(&d3d12.rtv_heap);
             d3d12.device->CreateRenderTargetView(swapchain->swapchain_buffers[i], NULL, d3d12_descriptor_cpu(&d3d12.rtv_heap, swapchain->render_targets[i]));
         }
@@ -60,5 +56,13 @@ namespace hoppy {
     void d3d12_swapchain_present(d3d12_swapchain *swapchain, bool vsync)
     {
         swapchain->swapchain->Present(vsync, 0);
+    }
+
+    uint32_t d3d12_swapchain_get_image_index(d3d12_swapchain *swapchain)
+    {
+        if (!swapchain->swapchain) {
+            log_crit("[ERROR] Swapchain is invalid!");
+        }
+        return swapchain->swapchain->GetCurrentBackBufferIndex();
     }
 }

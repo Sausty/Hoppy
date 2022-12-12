@@ -40,6 +40,12 @@ namespace hoppy {
 
     /// @brief Exits the render hardware interface
     void rhi_exit();
+
+    /// @brief Sets up the rendering process
+    void rhi_begin();
+
+    /// @brief Finishes the rendering process
+    void rhi_end();
 }
 
 #endif /* !RHI_H_ */

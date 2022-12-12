@@ -1,5 +1,7 @@
 # IDE files
 .vscode/
+.xmake/
+build/
 
 # Junk files
 *.a
