@@ -24,3 +24,7 @@ Some of the features that we want to add include:
 - A cross platform RHI supporting many APIs
 - A scripting module powered by AngelScript
 - A simple yet powerful world management with an ECS
+
+## Special thanks to
+
+- Lynix (integration of xmake)
