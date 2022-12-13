@@ -45,6 +45,7 @@ namespace hoppy {
         d3d12_fence device_fence;
 
         d3d12_descriptor_heap rtv_heap;
+        d3d12_descriptor_heap cbv_srv_uav_heap;
 
         d3d12_swapchain swapchain;
         uint64_t frame_sync[FRAMES_IN_FLIGHT];

@@ -20,11 +20,18 @@ target("Hoppy")
     add_includedirs("src", { public = true })
 
     if get_config("rhi") == "d3d12" then
+        remove_files("src/rhi/d3d11/**")
         remove_files("src/rhi/metal/**")
         remove_files("src/rhi/opengl/**")
         remove_files("src/rhi/vulkan/**")
     elseif get_config("rhi") == "vulkan" then
+        remove_files("src/rhi/d3d11/**")
         remove_files("src/rhi/metal/**")
+        remove_files("src/rhi/opengl/**")
+        remove_files("src/rhi/d3d12/**")
+    elseif get_config("rhi") == "metal" then
+        remove_files("src/rhi/d3d11/**")
+        remove_files("src/rhi/vulkan/**")
         remove_files("src/rhi/opengl/**")
         remove_files("src/rhi/d3d12/**")
     end
@@ -37,7 +44,6 @@ target("Hoppy")
         remove_files("src/*/macos/**")
     elseif is_plat("linux") then
         add_packages("libx11", "libxcb")
-
         remove_files("src/audio/core_audio/**")
         remove_files("src/audio/direct_sound/**")
         remove_files("src/*/windows/**")

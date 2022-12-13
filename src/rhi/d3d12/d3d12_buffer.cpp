@@ -71,7 +71,8 @@ namespace hoppy {
             case rhi_buffer_type::uniform: {
                 data->cbv.BufferLocation = data->resource->GetGPUVirtualAddress();
                 data->cbv.SizeInBytes = size;
-                // TODO(milo.h): Allocate descriptor
+                data->heap_index = d3d12_descriptor_alloc(&d3d12.cbv_srv_uav_heap);
+                d3d12.device->CreateConstantBufferView(&data->cbv, d3d12_descriptor_cpu(&d3d12.cbv_srv_uav_heap, data->heap_index));
             } break;
             case rhi_buffer_type::storage: {
                 log_warn("[WARN] D3D12 storage buffers aren't supported yet!");

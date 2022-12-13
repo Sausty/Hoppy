@@ -188,6 +188,7 @@ namespace hoppy {
         init_cmd_queue();
         d3d12_fence_init(&d3d12.device_fence);
         d3d12_descriptor_heap_init(&d3d12.rtv_heap, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 512);
+        d3d12_descriptor_heap_init(&d3d12.cbv_srv_uav_heap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 2048);
         init_cmds();
         d3d12_swapchain_init(&d3d12.swapchain);
     }
@@ -201,6 +202,7 @@ namespace hoppy {
             SafeRelease(d3d12.cmd_lists[i]);
             SafeRelease(d3d12.cmd_allocators[i]);
         }
+        d3d12_descriptor_heap_free(&d3d12.cbv_srv_uav_heap);
         d3d12_descriptor_heap_free(&d3d12.rtv_heap);
         d3d12_fence_free(&d3d12.device_fence);
         SafeRelease(d3d12.cmd_queue);
