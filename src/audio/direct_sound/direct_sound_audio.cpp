@@ -33,12 +33,12 @@ namespace hoppy {
         if (DSCreate8(nullptr, &ds_state.dsound_device, nullptr) != DS_OK) {
             log_err("[ERROR] Failed to create Direct Sound device!");
         }
-        HRESULT result = IDirectSound8_SetCooperativeLevel(ds_state.dsound_device, (HWND)w->platform_handle, DSSCL_PRIORITY);
+        HRESULT result = ds_state.dsound_device->SetCooperativeLevel((HWND)w->platform_handle, DSSCL_PRIORITY);
         if (FAILED(result)) {
             log_err("[ERROR] Failed to set cooperative level!");
         }
         ds_state.device_caps.dwSize = sizeof(DSCAPS);
-        IDirectSound8_GetCaps(ds_state.dsound_device, &ds_state.device_caps);
+        ds_state.dsound_device->GetCaps(&ds_state.device_caps);
 
         // NOTE(milo.h): Create primary buffer
         WAVEFORMATEX wave_format = {};
@@ -59,17 +59,17 @@ namespace hoppy {
         buffer_desc.lpwfxFormat = nullptr;
         buffer_desc.guid3DAlgorithm = guid_null;
 
-        result = IDirectSound8_CreateSoundBuffer(ds_state.dsound_device, &buffer_desc, &ds_state.primary_buffer, nullptr);
+        result = ds_state.dsound_device->CreateSoundBuffer(&buffer_desc, &ds_state.primary_buffer, nullptr);
         if (FAILED(result)) {
             log_err("[ERROR] Failed to create primary sound buffer!");
         }
-        IDirectSoundBuffer8_SetFormat(ds_state.primary_buffer, &wave_format);
+        ds_state.primary_buffer->SetFormat(&wave_format);
     }
 
     void audio_exit()
     {
-        IDirectSoundBuffer_Release(ds_state.primary_buffer);
-        IDirectSound8_Release(ds_state.dsound_device);
+        ds_state.primary_buffer->Release();
+        ds_state.dsound_device->Release();
         dynamic_library_free(&ds_state.dsound_library);
     }
 }

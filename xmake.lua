@@ -1,6 +1,13 @@
 add_rules("mode.debug", "mode.release")
 
-option("rhi", { description = "Renderer backend", default = is_plat("windows") and "d3d12" or "vulkan" })
+option("rhi")
+    if is_plat("windows") then
+        set_default("d3d12")
+    elseif is_plat("linux") then
+        set_default("vulkan")
+    elseif is_plat("macos") then
+        set_default("metal")
+    end
 
 if is_plat("linux") then
     add_requires("libx11", "libxcb")
