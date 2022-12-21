@@ -8,6 +8,7 @@
 #include "foundation/application.h"
 #include "foundation/input.h"
 #include "rhi/rhi.h"
+#include "rhi/rhi_buffer.h"
 
 #include <iostream>
 
@@ -15,6 +16,7 @@ int main()
 {
     hoppy::application app;
     hoppy::application_init(&app, 1280, 720, "Hoppy Sandbox");
+
     while (hoppy::application_is_running(&app)) {
         hoppy::application_update(&app);
 
