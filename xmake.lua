@@ -1,5 +1,7 @@
 add_rules("mode.debug", "mode.release")
 
+add_requires("shaderc")
+
 option("rhi")
     if is_plat("windows") then
         set_default("d3d12")
@@ -20,6 +22,7 @@ target("Hoppy")
     add_includedirs("src", { public = true })
 
     if get_config("rhi") == "d3d12" then
+        add_syslinks("d3d12", "dxgi", "d3dcompiler")
         remove_files("src/rhi/d3d11/**")
         remove_files("src/rhi/metal/**")
         remove_files("src/rhi/opengl/**")
