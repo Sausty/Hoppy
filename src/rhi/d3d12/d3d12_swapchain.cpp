@@ -73,7 +73,7 @@ namespace hoppy {
                 SafeRelease(swapchain->swapchain_buffers[i]);
                 d3d12_descriptor_free(&d3d12.rtv_heap, swapchain->render_targets[i]);
             }
-            swapchain->swapchain->ResizeBuffers1(0, width, height, DXGI_FORMAT_UNKNOWN, 0, NULL, NULL);
+            swapchain->swapchain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
             for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
                 HRESULT result = swapchain->swapchain->GetBuffer(i, IID_PPV_ARGS(&swapchain->swapchain_buffers[i]));
                 if (FAILED(result)) {

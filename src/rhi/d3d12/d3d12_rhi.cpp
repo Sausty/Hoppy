@@ -231,6 +231,34 @@ namespace hoppy {
 
         allocator->Reset();
         list->Reset(allocator, NULL);
+
+        D3D12_VIEWPORT viewport = {};
+        viewport.Width = window_size.Width;
+        viewport.Height = window_size.Height;
+        viewport.TopLeftX = 0;
+        viewport.TopLeftY = 0;
+
+        D3D12_RECT scissor = {};
+        scissor.left = 0;
+        scissor.top = 0;
+        scissor.right = window_size.Width;
+        scissor.bottom = window_size.Height;
+
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Transition.pResource = d3d12.swapchain.swapchain_buffers[d3d12.frame_index];
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+        barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+        list->ResourceBarrier(1, &barrier);
+
+        list->RSSetViewports(1, &viewport);
+        list->RSSetScissorRects(1, &scissor);
+
+        const float clear[4] = { 0.3f, 0.4f, 0.8f, 1.0f };
+
+        auto cpu_handle = d3d12_descriptor_cpu(&d3d12.rtv_heap, d3d12.swapchain.render_targets[d3d12.frame_index]);
+        list->OMSetRenderTargets(1, &cpu_handle, false, NULL);
+        list->ClearRenderTargetView(cpu_handle, clear, 0, NULL);
     }
 
     void rhi_end()
@@ -240,6 +268,13 @@ namespace hoppy {
             return;
 
         auto list = d3d12.cmd_lists[d3d12.frame_index];
+        
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Transition.pResource = d3d12.swapchain.swapchain_buffers[d3d12.frame_index];
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+        barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
+        list->ResourceBarrier(1, &barrier);
         list->Close();
 
         ID3D12CommandList* command_lists[] = { list };

@@ -17,9 +17,7 @@ namespace hoppy {
     bool application_resize(event_type type, void *sender, void *listener_inst, event data) {
         uint32_t width = data.payload.u32[0];
         uint32_t height = data.payload.u32[1];
-        if (type == event_type::resize) {
-            rhi_resize(width, height);
-        }
+        rhi_resize(width, height);
         log_info("[INFO] Resized application with dimensions (%d, %d)", width, height);
         return true;
     }
