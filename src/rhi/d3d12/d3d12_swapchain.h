@@ -26,6 +26,7 @@ namespace hoppy {
     void d3d12_swapchain_free(d3d12_swapchain *swapchain);
     void d3d12_swapchain_present(d3d12_swapchain *swapchain, bool vsync);
     uint32_t d3d12_swapchain_get_image_index(d3d12_swapchain *swapchain);
+    void d3d12_swapchain_resize(d3d12_swapchain *swapchain, uint32_t width, uint32_t height);
 }
 
 #endif /* !D3D12_SWAPCHAIN_H_ */

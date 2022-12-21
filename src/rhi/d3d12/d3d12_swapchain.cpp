@@ -65,4 +65,23 @@ namespace hoppy {
         }
         return swapchain->swapchain->GetCurrentBackBufferIndex();
     }
+
+    void d3d12_swapchain_resize(d3d12_swapchain *swapchain, uint32_t width, uint32_t height)
+    {
+        if (swapchain->swapchain) {
+            for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
+                SafeRelease(swapchain->swapchain_buffers[i]);
+                d3d12_descriptor_free(&d3d12.rtv_heap, swapchain->render_targets[i]);
+            }
+            swapchain->swapchain->ResizeBuffers1(0, width, height, DXGI_FORMAT_UNKNOWN, 0, NULL, NULL);
+            for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
+                HRESULT result = swapchain->swapchain->GetBuffer(i, IID_PPV_ARGS(&swapchain->swapchain_buffers[i]));
+                if (FAILED(result)) {
+                    log_crit("[ERROR] Failed to get swapchain buffer!");
+                }
+                swapchain->render_targets[i] = d3d12_descriptor_alloc(&d3d12.rtv_heap);
+                d3d12.device->CreateRenderTargetView(swapchain->swapchain_buffers[i], NULL, d3d12_descriptor_cpu(&d3d12.rtv_heap, swapchain->render_targets[i]));
+            }
+        }
+    }
 }

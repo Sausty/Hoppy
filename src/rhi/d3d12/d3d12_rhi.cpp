@@ -248,4 +248,9 @@ namespace hoppy {
         d3d12_swapchain_present(&d3d12.swapchain, true);
         d3d12.frame_sync[d3d12.frame_index] = d3d12_fence_signal(&d3d12.device_fence);
     }
+
+    void rhi_resize(uint32_t width, uint32_t height)
+    {
+        d3d12_swapchain_resize(&d3d12.swapchain, width, height);
+    }
 }

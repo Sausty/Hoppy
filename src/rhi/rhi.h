@@ -46,6 +46,9 @@ namespace hoppy {
 
     /// @brief Finishes the rendering process
     void rhi_end();
+
+    /// @brief Resizes the render hardware interface
+    void rhi_resize(uint32_t width, uint32_t height);
 }
 
 #endif /* !RHI_H_ */
