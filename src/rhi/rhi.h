@@ -27,6 +27,14 @@ namespace hoppy {
         vulkan
     };
 
+    /// @brief Represents the feature requests for the RHI
+    struct rhi_feature_request {
+        /// @brief Request mesh shaders
+        bool mesh_shaders;
+        /// @brief Request raytracing
+        bool raytracing;
+    };
+
     /// @brief Connects the render hardware interface to the given window
     /// @param w The window to connect to
     void rhi_connect_window(window *w);
@@ -36,7 +44,8 @@ namespace hoppy {
     rhi_backend rhi_get_backend();
 
     /// @brief Initialises the render hardware interface
-    void rhi_init();
+    /// @param requests The features of the RHI. Can be NULL
+    void rhi_init(rhi_feature_request *requests);
 
     /// @brief Exits the render hardware interface
     void rhi_exit();

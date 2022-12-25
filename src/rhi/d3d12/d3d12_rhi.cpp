@@ -149,7 +149,7 @@ namespace hoppy {
         d3d12.w = w;
     }
 
-    void rhi_init()
+    void rhi_init(rhi_feature_request *requests)
     {
         init_device();
         init_cmd_queue();
@@ -158,6 +158,20 @@ namespace hoppy {
         d3d12_descriptor_heap_init(&d3d12.cbv_srv_uav_heap, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, 1'000'000);
         init_cmds();
         d3d12_swapchain_init(&d3d12.swapchain);
+
+        if (requests) {
+            D3D12_FEATURE_DATA_D3D12_OPTIONS7 mesh_data = {};
+            d3d12.device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS7, &mesh_data, sizeof(mesh_data));
+            if (mesh_data.MeshShaderTier == D3D12_MESH_SHADER_TIER_1) {
+                requests->mesh_shaders = true;
+            }
+    
+            D3D12_FEATURE_DATA_D3D12_OPTIONS5 rtx_data = {};
+            d3d12.device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, &rtx_data, sizeof(rtx_data));
+            if (rtx_data.RaytracingTier == D3D12_RAYTRACING_TIER_1_1) {
+                requests->raytracing = true;
+            }
+        }
     }
 
     void rhi_exit()

@@ -22,7 +22,7 @@ namespace hoppy {
         v_state.connected_window = w;
     }
 
-    void rhi_init()
+    void rhi_init(rhi_feature_request *requests)
     {
         return;
     }

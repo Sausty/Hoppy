@@ -31,7 +31,14 @@ namespace hoppy {
         input_init();
         audio_init(&app->w);
         rhi_connect_window(&app->w);
-        rhi_init();
+
+        rhi_feature_request request;
+        rhi_init(&request);
+
+        if (request.mesh_shaders)
+            log_info("[INFO] Mesh shaders supported!");
+        if (request.raytracing)
+            log_info("[INFO] Raytracing supported!");
     }
 
     void application_close(application *app)
